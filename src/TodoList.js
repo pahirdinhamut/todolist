@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import TodoItem from './TodoItem';
+import axios from 'axios';
+
 import './style.css';
 
 class TodoList extends Component {
@@ -15,13 +17,22 @@ class TodoList extends Component {
     this.handleItemDelete = this.handleItemDelete.bind(this);
   }
 
+  shouldComponentUpdate(nextPropos, nextState) {
+    if (nextPropos.content !== this.props.content) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   render() {
     return (
       <Fragment>
         {/* bu rası  */}
         <div>
           <label htmlFor="inserArea" >İçerik Ekleyin</label>
-          <input id="inserArea" className='input' value={this.state.inputValue} onChange={this.handleTnputChange} />
+          <input id="inserArea" className='input'
+            value={this.state.inputValue} onChange={this.handleTnputChange}
+          />
           <button onClick={this.handlebtnClick}>Gönder</button>
         </div>
         <ul>
@@ -30,6 +41,14 @@ class TodoList extends Component {
       </Fragment >
     )
   }
+  // tek sefer kullanım  function ajax kullanım için uygundur 
+  componentDidMount() {
+    axios.get('/api/todolist').then(() => {
+      alert('succ');
+    }).catch(() => {
+      alert('error');
+    })
+  }
 
 
   getTodoItem() {
@@ -37,7 +56,9 @@ class TodoList extends Component {
     return this.state.list.map((item, index) => {
       return (
 
-        <TodoItem key={index} content={item} index={index} deleteItem={this.handleItemDelete} />
+        <TodoItem key={index} content={item}
+          index={index}
+          deleteItem={this.handleItemDelete} />
 
 
       )
@@ -45,6 +66,7 @@ class TodoList extends Component {
   }
 
   handleTnputChange(e) {
+
     const value = e.target.value;
     // setState asıl oldığu state verileri değiştimek için kullandık
     this.setState(() => ({

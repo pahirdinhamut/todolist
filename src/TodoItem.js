@@ -6,6 +6,11 @@ class TodoItem extends Component {
     this.handleClick = this.handleClick.bind(this);
 
   }
+
+
+
+
+
   render() {
     const { content } = this.props;
     return (
@@ -22,7 +27,7 @@ class TodoItem extends Component {
 }
 TodoItem.propTypes = {
   test: propTypes.string,
-  content: propTypes.string,
+  content: propTypes.oneOfType([propTypes.number, propTypes.string]),
   deleteItem: propTypes.func,
   index: propTypes.number
 }
